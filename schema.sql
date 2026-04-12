@@ -56,13 +56,6 @@ CREATE TABLE IF NOT EXISTS skills (
   type VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS admin (
-  id SERIAL PRIMARY KEY,
-  email VARCHAR(255) NOT NULL UNIQUE,
-  password TEXT NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
 CREATE TABLE IF NOT EXISTS documents (
   id SERIAL PRIMARY KEY,
   type VARCHAR(50) NOT NULL,
@@ -198,16 +191,9 @@ VALUES
   (16, 'PyCharm', 'tool')
 ON CONFLICT (id) DO NOTHING;
 
-INSERT INTO admin
-  (id, email, password)
-VALUES
-  (1, 'ansuraj1998rks@gmail.com', '$2a$12$Lq0e8nGojK9.3xFAt0wHKe10CQ3aJ/JAW2hiyNE72m6p9wMrOVFJ2')
-ON CONFLICT (id) DO NOTHING;
-
 SELECT setval('projects_id_seq', COALESCE((SELECT MAX(id) FROM projects), 1));
 SELECT setval('profile_id_seq', COALESCE((SELECT MAX(id) FROM profile), 1));
 SELECT setval('certifications_id_seq', COALESCE((SELECT MAX(id) FROM certifications), 1));
 SELECT setval('experience_id_seq', COALESCE((SELECT MAX(id) FROM experience), 1));
 SELECT setval('education_id_seq', COALESCE((SELECT MAX(id) FROM education), 1));
 SELECT setval('skills_id_seq', COALESCE((SELECT MAX(id) FROM skills), 1));
-SELECT setval('admin_id_seq', COALESCE((SELECT MAX(id) FROM admin), 1));

@@ -5,9 +5,14 @@ const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 
 (async () => {
   try {
+    // List all tables in the database
     const result = await pool.query(
-      "SELECT table_name,column_name,data_type FROM information_schema.columns WHERE table_name IN ('admin','admins') ORDER BY table_name,column_name"
+      `SELECT table_name 
+       FROM information_schema.tables 
+       WHERE table_schema = 'public'
+       ORDER BY table_name`
     );
+    console.log('Database Tables:');
     console.log(JSON.stringify(result.rows, null, 2));
   } catch (err) {
     console.error('ERROR:', err.message);

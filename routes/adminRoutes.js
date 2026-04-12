@@ -6,6 +6,5 @@ const { requireAdmin } = require('../middleware/authMiddleware');
 router.post('/login', adminController.login);
 router.post('/logout', adminController.logout);
 router.get('/session', requireAdmin, adminController.session);
-router.put('/password', requireAdmin, adminController.changePassword);
 
 module.exports = router;

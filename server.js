@@ -6,7 +6,6 @@ const path = require('path');
 require('dotenv').config();
 
 const pool = require('./config/db');
-const Admin = require('./models/Admin');
 const adminRoutes = require('./routes/adminRoutes');
 
 const app = express();
@@ -109,6 +108,19 @@ app.use(cookieParser());
 app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: true, limit: '1mb' }));
 
+// Middleware: Set longer timeout for upload endpoints
+app.use((req, res, next) => {
+  const uploadPaths = ['/api/documents/upload', '/api/projects', '/api/certifications'];
+  const isUploadRequest = uploadPaths.some(path => req.path.startsWith(path)) && req.method === 'POST';
+  
+  if (isUploadRequest) {
+    // Set request timeout to 120 seconds (2 minutes) for uploads
+    req.setTimeout(120000);
+    res.setTimeout(120000);
+  }
+  next();
+});
+
 // Serve static files from uploads directory
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
@@ -187,7 +199,6 @@ const startServer = async () => {
     await pool.initialize();
     if (pool.connected) {
       await runLightMigrations();
-      await Admin.ensureDefaultAdmin();
     }
 
     const dbStatus = pool.connected ? '✅ Connected' : '⚠️ Fallback mode (database unavailable)';

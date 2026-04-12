@@ -1,8 +1,16 @@
 const bcrypt = require('bcryptjs');
 const pool = require('../config/db');
 
-const DEFAULT_ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'ansuraj1998rks@gmail.com';
-const DEFAULT_ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'Ansu.raj@2003';
+// SECURITY: Environment variables are REQUIRED - no defaults!
+if (!process.env.ADMIN_EMAIL) {
+  throw new Error('ADMIN_EMAIL environment variable is required');
+}
+if (!process.env.ADMIN_PASSWORD) {
+  throw new Error('ADMIN_PASSWORD environment variable is required');
+}
+
+const DEFAULT_ADMIN_EMAIL = process.env.ADMIN_EMAIL;
+const DEFAULT_ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 const BCRYPT_ROUNDS = 12;
 
 function toAdmin(row) {
