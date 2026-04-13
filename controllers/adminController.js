@@ -1,5 +1,6 @@
 const {
   createAuthToken,
+  getCookieClearOptions,
   getCookieOptions,
   SESSION_DURATION_MS,
   TOKEN_COOKIE,
@@ -73,9 +74,18 @@ function invalidLogin(res, key) {
   return res.status(401).json({ error: INVALID_LOGIN_MESSAGE });
 }
 
+function setNoStoreHeaders(res) {
+  res.set({
+    'Cache-Control': 'no-store, no-cache, must-revalidate, private',
+    Pragma: 'no-cache',
+    Expires: '0',
+  });
+}
+
 const adminController = {
   login: (req, res) => {
     try {
+      setNoStoreHeaders(res);
       const { email, password } = req.body;
       const normalizedEmail = normalizeEmail(email);
       const loginKey = getLoginKey(req, normalizedEmail);
@@ -103,12 +113,14 @@ const adminController = {
   },
 
   logout: (req, res) => {
-    res.clearCookie(TOKEN_COOKIE, getCookieOptions());
+    setNoStoreHeaders(res);
+    res.clearCookie(TOKEN_COOKIE, getCookieClearOptions());
     console.log('[ADMIN LOGOUT] User logged out');
     res.json({ success: true });
   },
 
   session: (req, res) => {
+    setNoStoreHeaders(res);
     if (!req.admin) {
       return res.status(401).json({ authenticated: false });
     }

@@ -85,10 +85,21 @@ function getCookieOptions() {
   };
 }
 
+function getCookieClearOptions() {
+  const secure = process.env.NODE_ENV === 'production';
+  return {
+    httpOnly: true,
+    secure,
+    sameSite: 'strict',
+    path: '/',
+  };
+}
+
 module.exports = {
   requireAdmin,
   createAuthToken,
   getCookieOptions,
+  getCookieClearOptions,
   getSessionExpiry,
   SESSION_DURATION_MS,
   TOKEN_COOKIE,
