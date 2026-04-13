@@ -1,7 +1,7 @@
 const Certification = require('../models/Certification');
 const db = require('../config/db');
 const fallback = require('../config/fallbackData');
-const { getUploadedImageUrl } = require('../middleware/upload');
+const { getUploadedFileUrl } = require('../middleware/upload');
 
 function validateCertification(certificationData) {
   if (!certificationData.title || !certificationData.issuer || !certificationData.date) {
@@ -44,7 +44,7 @@ const certificationController = {
   createCertification: async (req, res) => {
     try {
       const certificationData = { ...req.body };
-      certificationData.image_url = req.file ? getUploadedImageUrl(req.file) : 'N/A';
+      certificationData.image_url = req.file ? getUploadedFileUrl(req.file) : 'N/A';
       certificationData.imageUrl = certificationData.image_url;
       validateCertification(certificationData);
       if (db.useFallback) {
@@ -71,7 +71,7 @@ const certificationController = {
         }
 
         certificationData.image_url = req.file
-          ? getUploadedImageUrl(req.file)
+          ? getUploadedFileUrl(req.file)
           : existingCertification.imageUrl || 'N/A';
         certificationData.imageUrl = certificationData.image_url;
 
@@ -87,7 +87,7 @@ const certificationController = {
       }
 
       certificationData.image_url = req.file
-        ? getUploadedImageUrl(req.file)
+        ? getUploadedFileUrl(req.file)
         : existingCertification.imageUrl || 'N/A';
       certificationData.imageUrl = certificationData.image_url;
 

@@ -4,6 +4,12 @@ require('dotenv').config();
 const connectionString = process.env.DATABASE_URL;
 let pool = null;
 
+function handlePoolError(error) {
+  console.error('PostgreSQL pool error:', error.message);
+  db.connected = false;
+  db.useFallback = true;
+}
+
 const db = {
   pool: null,
   connected: false,
@@ -19,6 +25,7 @@ const db = {
 
     pool = new Pool({ connectionString });
     this.pool = pool;
+    pool.on('error', handlePoolError);
 
     try {
       await pool.query('SELECT 1');

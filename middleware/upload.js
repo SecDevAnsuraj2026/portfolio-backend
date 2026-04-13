@@ -116,5 +116,6 @@ function getUploadedFileUrl(file) {
 module.exports = {
   createUpload,
   getUploadedFileUrl,
+  getUploadedImageUrl: getUploadedFileUrl,
   MAX_FILE_SIZE_BYTES,
 };

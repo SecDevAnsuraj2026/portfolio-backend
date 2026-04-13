@@ -1,7 +1,7 @@
 const Project = require('../models/Project');
 const db = require('../config/db');
 const fallback = require('../config/fallbackData');
-const { getUploadedImageUrl } = require('../middleware/upload');
+const { getUploadedFileUrl } = require('../middleware/upload');
 
 function validateProject(projectData) {
   if (!projectData.title || !projectData.description) {
@@ -44,7 +44,7 @@ const projectController = {
   createProject: async (req, res) => {
     try {
       const projectData = { ...req.body };
-      projectData.image_url = req.file ? getUploadedImageUrl(req.file) : 'N/A';
+      projectData.image_url = req.file ? getUploadedFileUrl(req.file) : 'N/A';
       projectData.imageUrl = projectData.image_url;
       validateProject(projectData);
       if (db.useFallback) {
@@ -71,7 +71,7 @@ const projectController = {
         }
 
         projectData.image_url = req.file
-          ? getUploadedImageUrl(req.file)
+          ? getUploadedFileUrl(req.file)
           : existingProject.imageUrl || 'N/A';
         projectData.imageUrl = projectData.image_url;
 
@@ -87,7 +87,7 @@ const projectController = {
       }
 
       projectData.image_url = req.file
-        ? getUploadedImageUrl(req.file)
+        ? getUploadedFileUrl(req.file)
         : existingProject.imageUrl || 'N/A';
       projectData.imageUrl = projectData.image_url;
 

@@ -1,0 +1,12 @@
+◇ injected env (8) from .env // tip: ⌘ override existing { override: true }
+◇ injected env (0) from .env // tip: ⌘ suppress logs { quiet: true }
+
+==================================================
+🚀 Server is running successfully
+==================================================
+📍 Local URL: http://localhost:5000
+🔗 API Base URL: http://localhost:5000/api
+🌍 Environment: development
+🗄️  Database: ✅ Connected
+==================================================
+
