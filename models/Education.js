@@ -1,4 +1,4 @@
-const pool = require('../config/db');
+import pool from '../config/db.js';
 
 function toEducation(row) {
   return {
@@ -52,4 +52,4 @@ class Education {
   }
 }
 
-module.exports = Education;
+export default Education;

@@ -1,6 +1,6 @@
-const Experience = require('../models/Experience');
-const db = require('../config/db');
-const fallback = require('../config/fallbackData');
+import Experience from '../models/Experience.js';
+import db from '../config/db.js';
+import * as fallback from '../config/fallbackData.js';
 
 function validateExperience(experienceData) {
   if (!experienceData.role || !experienceData.organization || !(experienceData.startDate || experienceData.start_date)) {
@@ -81,4 +81,4 @@ const experienceController = {
   },
 };
 
-module.exports = experienceController;
+export default experienceController;

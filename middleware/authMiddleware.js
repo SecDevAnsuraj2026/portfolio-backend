@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 
 const TOKEN_COOKIE = 'portfolioAdminSession';
 const SESSION_DURATION_MS = 30 * 60 * 1000;
@@ -79,7 +79,7 @@ function getCookieOptions() {
   return {
     httpOnly: true,
     secure,
-    sameSite: 'strict',
+    sameSite: secure ? 'none' : 'lax',
     maxAge: SESSION_DURATION_MS,
     path: '/',
   };
@@ -90,12 +90,12 @@ function getCookieClearOptions() {
   return {
     httpOnly: true,
     secure,
-    sameSite: 'strict',
+    sameSite: secure ? 'none' : 'lax',
     path: '/',
   };
 }
 
-module.exports = {
+export {
   requireAdmin,
   createAuthToken,
   getCookieOptions,

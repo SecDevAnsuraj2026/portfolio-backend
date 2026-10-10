@@ -1,5 +1,6 @@
-const bcrypt = require('bcryptjs');
-const pool = require('../config/db');
+import bcrypt from 'bcryptjs';
+
+import pool from '../config/db.js';
 
 // SECURITY: Environment variables are REQUIRED - no defaults!
 if (!process.env.ADMIN_EMAIL) {
@@ -86,4 +87,4 @@ class Admin {
   }
 }
 
-module.exports = Admin;
+export default Admin;

@@ -1,6 +1,6 @@
-const Education = require('../models/Education');
-const db = require('../config/db');
-const fallback = require('../config/fallbackData');
+import Education from '../models/Education.js';
+import db from '../config/db.js';
+import * as fallback from '../config/fallbackData.js';
 
 function validateEducation(educationData) {
   if (!educationData.degree || !educationData.institution) {
@@ -81,4 +81,4 @@ const educationController = {
   },
 };
 
-module.exports = educationController;
+export default educationController;

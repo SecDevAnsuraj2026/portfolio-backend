@@ -1,4 +1,4 @@
-const { v2: cloudinary } = require('cloudinary');
+import { v2 as cloudinary } from 'cloudinary';
 
 const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
 const apiKey = process.env.CLOUDINARY_API_KEY;
@@ -15,7 +15,7 @@ function isCloudinaryConfigured() {
   return Boolean(cloudName && apiKey && apiSecret);
 }
 
-module.exports = {
+export {
   cloudinary,
   isCloudinaryConfigured,
 };

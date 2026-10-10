@@ -1,4 +1,4 @@
-const pool = require('../config/db');
+import pool from '../config/db.js';
 
 function toProfile(row) {
   return {
@@ -18,7 +18,7 @@ function toProfile(row) {
 
 function toProfileRecord(profileData) {
   return {
-    name: profileData.name || 'Ansuraj Raj',
+    name: profileData.name || 'Ansu Raj',
     email: profileData.email || '',
     summary: profileData.summary || '',
     mobile: profileData.mobile || '',
@@ -72,4 +72,4 @@ class Profile {
   }
 }
 
-module.exports = Profile;
+export default Profile;

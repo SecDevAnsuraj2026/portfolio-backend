@@ -1,9 +1,12 @@
-const fs = require('fs');
-const path = require('path');
-const { Pool } = require('pg');
-require('dotenv').config();
+import 'dotenv/config';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { Pool } from 'pg';
 
 const connectionString = process.env.DATABASE_URL;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 async function setupDatabase() {
   const schemaPath = path.join(__dirname, '..', 'schema.sql');

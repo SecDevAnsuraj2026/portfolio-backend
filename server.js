@@ -1,16 +1,26 @@
-const express = require('express');
-const cors = require('cors');
-const cookieParser = require('cookie-parser');
-const multer = require('multer');
-const path = require('path');
-require('dotenv').config();
+import 'dotenv/config';
+import express from 'express';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
+import multer from 'multer';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const pool = require('./config/db');
-const adminRoutes = require('./routes/adminRoutes');
+import pool from './config/db.js';
+import adminRoutes from './routes/adminRoutes.js';
+import projectRoutes from './routes/projectRoutes.js';
+import certificationRoutes from './routes/certificationRoutes.js';
+import experienceRoutes from './routes/experienceRoutes.js';
+import educationRoutes from './routes/educationRoutes.js';
+import skillRoutes from './routes/skillRoutes.js';
+import profileRoutes from './routes/profileRoutes.js';
+import documentRoutes from './routes/documentRoutes.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 const NODE_ENV = process.env.NODE_ENV || 'development';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const allowedOrigins = (process.env.CLIENT_URL || 'http://localhost:5173')
   .split(',')
   .map((origin) => origin.trim())
@@ -124,15 +134,6 @@ app.use((req, res, next) => {
 // Serve static files from uploads directory
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Routes
-const projectRoutes = require('./routes/projectRoutes');
-const certificationRoutes = require('./routes/certificationRoutes');
-const experienceRoutes = require('./routes/experienceRoutes');
-const educationRoutes = require('./routes/educationRoutes');
-const skillRoutes = require('./routes/skillRoutes');
-const profileRoutes = require('./routes/profileRoutes');
-const documentRoutes = require('./routes/documentRoutes');
-
 app.use('/api/projects', projectRoutes);
 app.use('/api/certifications', certificationRoutes);
 app.use('/api/experience', experienceRoutes);
@@ -229,4 +230,5 @@ const startServer = async () => {
   }
 };
 
-app.listen(PORT, startServer);
+const HOST = process.env.HOST || '0.0.0.0'
+app.listen(PORT, HOST, startServer);

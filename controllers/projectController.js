@@ -1,7 +1,7 @@
-const Project = require('../models/Project');
-const db = require('../config/db');
-const fallback = require('../config/fallbackData');
-const { getUploadedFileUrl } = require('../middleware/upload');
+import Project from '../models/Project.js';
+import db from '../config/db.js';
+import * as fallback from '../config/fallbackData.js';
+import { getUploadedFileUrl } from '../middleware/upload.js';
 
 function validateProject(projectData) {
   if (!projectData.title || !projectData.description) {
@@ -124,4 +124,4 @@ const projectController = {
   },
 };
 
-module.exports = projectController;
+export default projectController;

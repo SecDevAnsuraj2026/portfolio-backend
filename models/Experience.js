@@ -1,4 +1,4 @@
-const pool = require('../config/db');
+import pool from '../config/db.js';
 
 function toExperience(row) {
   return {
@@ -88,4 +88,4 @@ class Experience {
   }
 }
 
-module.exports = Experience;
+export default Experience;

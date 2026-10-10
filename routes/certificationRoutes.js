@@ -1,8 +1,9 @@
-const express = require('express');
+import express from 'express';
+
 const router = express.Router();
-const certificationController = require('../controllers/certificationController');
-const { createUpload } = require('../middleware/upload');
-const { requireAdmin } = require('../middleware/authMiddleware');
+import certificationController from '../controllers/certificationController.js';
+import { createUpload } from '../middleware/upload.js';
+import { requireAdmin } from '../middleware/authMiddleware.js';
 const upload = createUpload('certification');
 
 router.get('/', certificationController.getAllCertifications);
@@ -11,4 +12,4 @@ router.post('/', requireAdmin, upload.single('image'), certificationController.c
 router.put('/:id', requireAdmin, upload.single('image'), certificationController.updateCertification);
 router.delete('/:id', requireAdmin, certificationController.deleteCertification);
 
-module.exports = router;
+export default router;

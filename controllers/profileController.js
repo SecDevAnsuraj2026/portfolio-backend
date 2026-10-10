@@ -1,6 +1,6 @@
-const Profile = require('../models/Profile');
-const db = require('../config/db');
-const fallback = require('../config/fallbackData');
+import Profile from '../models/Profile.js';
+import db from '../config/db.js';
+import * as fallback from '../config/fallbackData.js';
 
 const profileController = {
   getProfile: async (req, res) => {
@@ -36,4 +36,4 @@ const profileController = {
   },
 };
 
-module.exports = profileController;
+export default profileController;

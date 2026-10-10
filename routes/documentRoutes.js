@@ -1,8 +1,9 @@
-const express = require('express');
+import express from 'express';
+
 const router = express.Router();
-const documentController = require('../controllers/documentController');
-const { requireAdmin } = require('../middleware/authMiddleware');
-const { createUpload } = require('../middleware/upload');
+import documentController from '../controllers/documentController.js';
+import { requireAdmin } from '../middleware/authMiddleware.js';
+import { createUpload } from '../middleware/upload.js';
 
 const uploadDocument = createUpload('document').single('document');
 
@@ -21,4 +22,4 @@ router.get('/:type', documentController.getByType);
 router.post('/upload', requireAdmin, uploadDocument, documentController.upload);
 router.delete('/:type', requireAdmin, documentController.deleteDocument);
 
-module.exports = router;
+export default router;

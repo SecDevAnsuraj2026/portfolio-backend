@@ -1,4 +1,4 @@
-const pool = require('../config/db');
+import pool from '../config/db.js';
 
 function toProject(row) {
   return {
@@ -93,4 +93,4 @@ class Project {
   }
 }
 
-module.exports = Project;
+export default Project;

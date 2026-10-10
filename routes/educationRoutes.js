@@ -1,11 +1,12 @@
-const express = require('express');
+import express from 'express';
+
 const router = express.Router();
-const educationController = require('../controllers/educationController');
-const { requireAdmin } = require('../middleware/authMiddleware');
+import educationController from '../controllers/educationController.js';
+import { requireAdmin } from '../middleware/authMiddleware.js';
 
 router.get('/', educationController.getAllEducation);
 router.post('/', requireAdmin, educationController.createEducation);
 router.put('/:id', requireAdmin, educationController.updateEducation);
 router.delete('/:id', requireAdmin, educationController.deleteEducation);
 
-module.exports = router;
+export default router;

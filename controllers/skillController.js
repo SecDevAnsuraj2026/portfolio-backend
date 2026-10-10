@@ -1,6 +1,6 @@
-const Skill = require('../models/Skill');
-const db = require('../config/db');
-const fallback = require('../config/fallbackData');
+import Skill from '../models/Skill.js';
+import db from '../config/db.js';
+import * as fallback from '../config/fallbackData.js';
 
 function validateSkill(skillData) {
   if (!skillData.name || !skillData.type) {
@@ -85,4 +85,4 @@ const skillController = {
   },
 };
 
-module.exports = skillController;
+export default skillController;

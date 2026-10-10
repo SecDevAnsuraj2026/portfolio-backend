@@ -1,6 +1,7 @@
-const Document = require('../models/Document');
-const { getUploadedFileUrl } = require('../middleware/upload');
-const axios = require('axios');
+import axios from 'axios';
+
+import Document from '../models/Document.js';
+import { getUploadedFileUrl } from '../middleware/upload.js';
 
 const VALID_DOCUMENT_TYPES = ['resume', 'cv'];
 
@@ -13,8 +14,12 @@ async function getAll(req, res) {
     const documents = await Document.getAll();
     res.json({ success: true, data: documents });
   } catch (error) {
-    console.error('Error fetching documents:', error);
-    res.status(500).json({ success: false, message: 'Failed to fetch documents' });
+    console.error('Error fetching documents:', error.message, error.stack);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Failed to fetch documents',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
   }
 }
 
@@ -33,8 +38,12 @@ async function getByType(req, res) {
 
     res.json({ success: true, data: document });
   } catch (error) {
-    console.error('Error fetching document:', error);
-    res.status(500).json({ success: false, message: 'Failed to fetch document' });
+    console.error('Error fetching document:', error.message, error.stack);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Failed to fetch document',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
   }
 }
 
@@ -61,12 +70,20 @@ async function upload(req, res) {
     console.log(`[UPLOAD] File size: ${req.file.size}`);
     console.log(`[UPLOAD] File URL from Cloudinary: ${fileUrl}`);
 
-    const document = await Document.upsert({ type, fileUrl });
-    res.json({ success: true, message: 'Document uploaded successfully', data: document });
+    try {
+      const document = await Document.upsert({ type, fileUrl });
+      res.json({ success: true, message: 'Document uploaded successfully', data: document });
+    } catch (dbError) {
+      console.error('Database error while upserting document:', dbError.message, dbError.stack);
+      throw new Error(`Failed to save document to database: ${dbError.message}`);
+    }
   } catch (error) {
-    console.error('Error uploading document:', error);
-    const message = error.message || 'Failed to upload document';
-    res.status(500).json({ success: false, message });
+    console.error('Error uploading document:', error.message, error.stack);
+    res.status(500).json({ 
+      success: false, 
+      message: error.message || 'Failed to upload document',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
   }
 }
 
@@ -78,15 +95,23 @@ async function deleteDocument(req, res) {
       return res.status(400).json({ success: false, message: 'Invalid document type' });
     }
 
-    const deleted = await Document.deleteByType(type);
-    if (!deleted) {
-      return res.status(404).json({ success: false, message: 'Document not found' });
+    try {
+      const deleted = await Document.deleteByType(type);
+      if (!deleted) {
+        return res.status(404).json({ success: false, message: 'Document not found' });
+      }
+      res.json({ success: true, message: 'Document deleted successfully', data: deleted });
+    } catch (dbError) {
+      console.error('Database error while deleting document:', dbError.message, dbError.stack);
+      throw new Error(`Failed to delete document: ${dbError.message}`);
     }
-
-    res.json({ success: true, message: 'Document deleted successfully', data: deleted });
   } catch (error) {
-    console.error('Error deleting document:', error);
-    res.status(500).json({ success: false, message: 'Failed to delete document' });
+    console.error('Error deleting document:', error.message, error.stack);
+    res.status(500).json({ 
+      success: false, 
+      message: error.message || 'Failed to delete document',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
   }
 }
 
@@ -210,7 +235,7 @@ function fetchFileBuffer(url) {
   });
 }
 
-module.exports = {
+export default {
   getAll,
   getByType,
   upload,

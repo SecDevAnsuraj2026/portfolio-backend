@@ -1,10 +1,10 @@
-const {
+import {
   createAuthToken,
   getCookieClearOptions,
   getCookieOptions,
   SESSION_DURATION_MS,
   TOKEN_COOKIE,
-} = require('../middleware/authMiddleware');
+} from '../middleware/authMiddleware.js';
 
 const INVALID_LOGIN_MESSAGE = 'Invalid admin credentials';
 const LOGIN_WINDOW_MS = 15 * 60 * 1000;
@@ -135,4 +135,4 @@ const adminController = {
   },
 };
 
-module.exports = adminController;
+export default adminController;

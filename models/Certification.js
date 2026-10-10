@@ -1,4 +1,4 @@
-const pool = require('../config/db');
+import pool from '../config/db.js';
 
 function toCertification(row) {
   return {
@@ -75,4 +75,4 @@ class Certification {
   }
 }
 
-module.exports = Certification;
+export default Certification;

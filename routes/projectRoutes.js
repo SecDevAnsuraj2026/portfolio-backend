@@ -1,8 +1,9 @@
-const express = require('express');
+import express from 'express';
+
 const router = express.Router();
-const projectController = require('../controllers/projectController');
-const { createUpload } = require('../middleware/upload');
-const { requireAdmin } = require('../middleware/authMiddleware');
+import projectController from '../controllers/projectController.js';
+import { createUpload } from '../middleware/upload.js';
+import { requireAdmin } from '../middleware/authMiddleware.js';
 const upload = createUpload('project');
 
 // Routes for projects
@@ -12,4 +13,4 @@ router.post('/', requireAdmin, upload.single('image'), projectController.createP
 router.put('/:id', requireAdmin, upload.single('image'), projectController.updateProject);
 router.delete('/:id', requireAdmin, projectController.deleteProject);
 
-module.exports = router;
+export default router;

@@ -1,7 +1,7 @@
-const Certification = require('../models/Certification');
-const db = require('../config/db');
-const fallback = require('../config/fallbackData');
-const { getUploadedFileUrl } = require('../middleware/upload');
+import Certification from '../models/Certification.js';
+import db from '../config/db.js';
+import * as fallback from '../config/fallbackData.js';
+import { getUploadedFileUrl } from '../middleware/upload.js';
 
 function validateCertification(certificationData) {
   if (!certificationData.title || !certificationData.issuer || !certificationData.date) {
@@ -124,4 +124,4 @@ const certificationController = {
   },
 };
 
-module.exports = certificationController;
+export default certificationController;

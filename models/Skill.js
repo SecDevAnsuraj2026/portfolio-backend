@@ -1,4 +1,4 @@
-const pool = require('../config/db');
+import pool from '../config/db.js';
 
 function toSkill(row) {
   return {
@@ -48,4 +48,4 @@ class Skill {
   }
 }
 
-module.exports = Skill;
+export default Skill;

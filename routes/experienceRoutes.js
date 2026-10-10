@@ -1,11 +1,12 @@
-const express = require('express');
+import express from 'express';
+
 const router = express.Router();
-const experienceController = require('../controllers/experienceController');
-const { requireAdmin } = require('../middleware/authMiddleware');
+import experienceController from '../controllers/experienceController.js';
+import { requireAdmin } from '../middleware/authMiddleware.js';
 
 router.get('/', experienceController.getAllExperience);
 router.post('/', requireAdmin, experienceController.createExperience);
 router.put('/:id', requireAdmin, experienceController.updateExperience);
 router.delete('/:id', requireAdmin, experienceController.deleteExperience);
 
-module.exports = router;
+export default router;

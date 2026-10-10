@@ -1,6 +1,6 @@
-const multer = require('multer');
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
-const { cloudinary, isCloudinaryConfigured } = require('../config/cloudinary');
+import multer from 'multer';
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
+import { cloudinary, isCloudinaryConfigured } from '../config/cloudinary.js';
 
 const MAX_FILE_SIZE_BYTES = 2 * 1024 * 1024;
 const ALLOWED_IMAGE_MIME_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp']);
@@ -113,9 +113,9 @@ function getUploadedFileUrl(file) {
   return file?.path || file?.secure_url || file?.url || null;
 }
 
-module.exports = {
+export {
   createUpload,
   getUploadedFileUrl,
-  getUploadedImageUrl: getUploadedFileUrl,
+  getUploadedFileUrl as getUploadedImageUrl,
   MAX_FILE_SIZE_BYTES,
 };
