@@ -115,26 +115,59 @@ npm install
 npm run db:setup
 npm run dev
 ```
-# Database Management with Neon PostgreSQL
 
-This repository contains details about our database hosting choice and handy SQL snippets for exploring data inside the Neon built-in SQL editor.
+## Troubleshooting
+- If PostgreSQL is down, the backend may run in fallback mode
+- If Cloudinary is missing, uploads will fail
+- If admin requests return `401`, log in again and verify frontend API config
 
-## 🚀 Why Neon over Render?
 
-When deciding on a cloud instance for PostgreSQL, **Neon** was selected over Render for the following reasons:
-* **Neon** provides a powerful free tier that gives you database storage that is **free for a lifetime**.
-* **Render** restricts its free PostgreSQL databases to **one month only**, after which the database is automatically expired and deleted.
+# Portfolio Backend & Database Infrastructure
 
-**Database Platform Website:** [https://neon.com](https://neon.com)
+This repository contains details about the hosting infrastructure, database settings, and handy SQL snippets used to maintain our application.
+
+## 🚀 Cloud Infrastructure & Architecture
+
+### 1. Database Hosting (Neon vs. Render)
+* **Neon** was selected over Render for database storage because Neon provides a powerful, **lifetime-free tier** for its serverless PostgreSQL instance.
+* Render restricts its free PostgreSQL databases to **one month only**, making Neon the superior choice for data persistence.
+* **Database Platform Website:** [https://neon.com](https://neon.com)
+
+### 2. Backend Hosting (Render)
+* The backend services are deployed on the Render cloud environment.
+* **The Challenge:** On Render's free tier, Web Services will automatically **spin down (go to sleep)** if they do not receive any traffic for **15 consecutive minutes**. If a user visits the app after a long time, the server suffers a cold start, causing the initial response to feel extremely laggy or slow.
+* **Backend Platform Website:** [https://render.com](https://render.com)
+
+### 3. Keep-Alive Automation (UptimeRobot)
+* To fix Render's spin-down lag, **UptimeRobot** is configured as a cron-style monitoring service.
+* **The Solution:** UptimeRobot sends a ping request to our Render backend API route every **5 minutes**. This regular traffic interval tricks the Render engine into staying awake continuously, ensuring instant response times whenever an actual user visits the website.
+* **Monitoring Platform Website:** [https://uptimerobot.com](https://uptimerobot.com)
+
+---
+
+## 🤖 Deep Dive: What is UptimeRobot?
+
+**UptimeRobot** is a popular cloud-based monitoring service used to track the availability (uptime) of websites, APIs, and servers. While its primary purpose is to alert developers when their site crashes, it is the perfect tool for maintaining free-tier cloud applications.
+
+### ⚙️ How the Keep-Alive Trick Works
+1. **The Target:** You configure UptimeRobot with your Render backend URL (e.g., your base URL or a dedicated `/health` endpoint).
+2. **The Interval:** UptimeRobot sends an automated HTTP request to that URL at a fixed frequency.
+3. **The Logic:** Because Render's idle timeout is **15 minutes**, UptimeRobot's **5-minute interval** effectively guarantees that the server never enters an idle state, completely bypassing "cold start" latency for real users.
+
+### 🎁 Key Features of the Free Tier
+* **50 Free Monitors:** Allows monitoring/keeping alive up to 50 distinct applications.
+* **5-Minute Checking Window:** The default check rate, which perfectly solves the Render free tier limitation.
+* **Multi-Location Verification:** To prevent false alarms, if a request fails, UptimeRobot double-checks your website from a completely different global datacenter before marking it down.
+* **Instant Notifications:** Automatically sends email alerts the moment your backend encounters a real crash or network issue.
 
 ---
 
 ## 🛠️ Neon SQL Editor Cheatsheet
 
-Use the following queries inside the Neon SQL Editor console to interact with your data.
+Use the following queries inside the Neon SQL Editor console to interact with the database tables.
 
 ### 📋 List All Tables
-To see a clean list of all the tables you have created in your database (filtering out internal system tables), run:
+To see a clean list of all user-generated tables (filtering out internal system schemas), run:
 
 ```sql
 SELECT table_name 
@@ -143,7 +176,7 @@ WHERE table_schema = 'public';
 ```
 
 ### 🔍 View Specific Table Data
-To inspect and view all the rows inside a specific table, run the corresponding query below:
+To inspect and view all the rows inside your portfolio tables, run the corresponding query below:
 
 * **User Profile Data**
   ```sql
@@ -175,8 +208,3 @@ To inspect and view all the rows inside a specific table, run the corresponding 
   SELECT * FROM documents;
   ```
 
-
-## Troubleshooting
-- If PostgreSQL is down, the backend may run in fallback mode
-- If Cloudinary is missing, uploads will fail
-- If admin requests return `401`, log in again and verify frontend API config
