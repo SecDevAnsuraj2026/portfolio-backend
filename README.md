@@ -106,6 +106,8 @@ CLIENT_URL=http://localhost:5173,http://localhost:3000
 - Falls back to seeded in-memory content if the database is unavailable
 - Applies light startup migrations for a few schema updates
 
+
+
 ## Run Backend Only
 ```bash
 cd backend/server-script
@@ -113,6 +115,66 @@ npm install
 npm run db:setup
 npm run dev
 ```
+# Database Management with Neon PostgreSQL
+
+This repository contains details about our database hosting choice and handy SQL snippets for exploring data inside the Neon built-in SQL editor.
+
+## 🚀 Why Neon over Render?
+
+When deciding on a cloud instance for PostgreSQL, **Neon** was selected over Render for the following reasons:
+* **Neon** provides a powerful free tier that gives you database storage that is **free for a lifetime**.
+* **Render** restricts its free PostgreSQL databases to **one month only**, after which the database is automatically expired and deleted.
+
+**Database Platform Website:** [https://neon.com](https://neon.com)
+
+---
+
+## 🛠️ Neon SQL Editor Cheatsheet
+
+Use the following queries inside the Neon SQL Editor console to interact with your data.
+
+### 📋 List All Tables
+To see a clean list of all the tables you have created in your database (filtering out internal system tables), run:
+
+```sql
+SELECT table_name 
+FROM information_schema.tables 
+WHERE table_schema = 'public';
+```
+
+### 🔍 View Specific Table Data
+To inspect and view all the rows inside a specific table, run the corresponding query below:
+
+* **User Profile Data**
+  ```sql
+  SELECT * FROM profile;
+  ```
+
+* **Project Portfolios**
+  ```sql
+  SELECT * FROM projects;
+  ```
+
+* **Work Experience**
+  ```sql
+  SELECT * FROM experience;
+  ```
+
+* **Academic Education**
+  ```sql
+  SELECT * FROM education;
+  ```
+
+* **Technical Skills**
+  ```sql
+  SELECT * FROM skills;
+  ```
+
+* **Uploaded Documents**
+  ```sql
+  SELECT * FROM documents;
+  ```
+
 
 ## Troubleshooting
 - If PostgreSQL is down, the backend may run in fallback mode
